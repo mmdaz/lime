@@ -79,7 +79,7 @@ func readViperConfig(appName string) *viper.Viper {
 
 	v.SetDefault("db_host", "127.0.0.1")
 	v.SetDefault("db_user", "postgres")
-	v.SetDefault("db_password", "postgres")
+	v.SetDefault("db_password", "123456")
 	v.SetDefault("db_name", "license")
 	v.SetDefault("db_port", "5432")
 

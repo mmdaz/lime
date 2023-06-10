@@ -71,3 +71,22 @@ func (t *Tariff) DeleteTariff(uid uint32) (int64, error) {
 	}
 	return db.RowsAffected, nil
 }
+
+type TariffData struct {
+	ID        uint32 `json:"id"`
+	Name      string `json:"name"`
+	Price     int    `json:"price"`
+	Servers   int    `json:"servers"`
+	Companies int    `json:"companies"`
+	Users     int    `json:"users"`
+}
+
+// Get all tariffs
+func FindAllTariffs() (*[]TariffData, error) {
+	var tariffs []TariffData
+	err := config.DB.Raw("SELECT id, name, price, servers, companies, users FROM tariffs").Scan(&tariffs).Error
+	if err != nil {
+		return &[]TariffData{}, err
+	}
+	return &tariffs, nil
+}

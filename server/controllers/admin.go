@@ -34,6 +34,42 @@ func MainHandler(c *gin.Context) {
 
 }
 
+func CreateCustomer(c *gin.Context) {
+	// Bind request body to struct
+	request := &requestCreateCustomer{}
+	err := c.BindJSON(request)
+	if err != nil {
+		respondJSON(c, 400, err.Error())
+		return
+	}
+
+	customer := models.Customer{
+		Name:   request.Name,
+		Status: request.Status,
+	}
+	cos, err := customer.SaveCustomer()
+	if err != nil {
+		respondJSON(c, 500, err.Error())
+		return
+	}
+
+	// create subscription
+	subs := &models.Subscription{
+		CustomerID: cos.ID,
+		StripeID:   "",
+		TariffID:   1,
+		Status:     true,
+	}
+	_, err = subs.SaveSubscription()
+	if err != nil {
+		respondJSON(c, 500, err.Error())
+		return
+	}
+
+	respondJSON(c, http.StatusOK, "Customer Created.")
+
+}
+
 // CustomerSubscrptionList is a ...
 func CustomerSubscrptionList(c *gin.Context) {
 	customerID := c.Param("id")
@@ -92,6 +128,18 @@ func CustomerSubscrptionList(c *gin.Context) {
 		"Licensies":     licensesList,
 	})
 
+}
+
+func TariffList(c *gin.Context) {
+	tariffList, err := models.FindAllTariffs()
+	if err != nil {
+		respondJSON(c, 500, err.Error())
+		return
+	}
+	c.HTML(http.StatusOK, "tariffs.html", gin.H{
+		"title":  "📦 Tariffs",
+		"tariffs": tariffList,
+	})
 }
 
 // DownloadLicense is a ...

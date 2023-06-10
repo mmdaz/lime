@@ -48,9 +48,11 @@ func setupRouter() *gin.Engine {
 	admin.GET("/", controllers.MainHandler)
 	admin.POST("/login", middleware.Login)
 	admin.POST("/logout", middleware.Logout)
+	admin.POST("/addCustomer", controllers.CreateCustomer)
 	admin.Use(middleware.AuthRequired)
 	{
 		admin.GET("/subscription/:id/*action", controllers.CustomerSubscrptionList)
+		admin.GET("/tariffs", controllers.TariffList)
 		admin.GET("/license/:id", controllers.DownloadLicense)
 	}
 

@@ -17,6 +17,7 @@
         {{template "_header.html"}}
         <section class="container">
             <h3>{{ .title }}</h3>
+            <button id="create-customer-btn">Create Customer</button>
             <table>
                 <thead>
                     <tr>
@@ -42,9 +43,61 @@
 
         </section>
 
+        <!-- Customer creation modal -->
+        <div id="create-customer-modal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <form id="create-customer-form">
+                    <label for="customer-name">Customer Name:</label>
+                    <input type="text" id="customer-name" name="customer-name">
+                    <input type="submit" value="Create">
+                </form>
+            </div>
+        </div>
+
     </main>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="/assets/js/main.js"></script>
+    <script>
+        // Show customer creation modal when button is clicked
+        $('#create-customer-btn').click(function() {
+            $('#create-customer-modal').show();
+        });
+
+        // Hide customer creation modal when close button is clicked
+        $('.close').click(function() {
+            $('#create-customer-modal').hide();
+        });
+
+        // Handle form submission
+        $('#create-customer-form').submit(function(event) {
+            event.preventDefault();
+            var customerName = $('#customer-name').val();
+            $.ajax({
+                url: '/admin/addCustomer',
+                type: 'POST',
+                data: JSON.stringify({
+                    'name': customerName,
+                    'status': true
+                }),
+                dataType: 'json',
+                contentType: 'application/json',
+                success: function(response) {
+                    // Reload page to show new customer in table
+                    location.reload();
+                },
+                error: function(error) {
+                    console.log(error);
+                }
+            });
+            
+            
+            
+        });
+
+        // Hide customer creation modal by default
+        $('#create-customer-modal').hide();
+    </script>
 </body>
 
 </html>

@@ -2,12 +2,17 @@ package license
 
 import (
 	"bytes"
+	"crypto"
+	"crypto/rand"
+	"crypto/rsa"
+	"crypto/sha256"
 	"encoding/json"
 	"encoding/pem"
 	"errors"
+	"fmt"
+	"io/ioutil"
+	"os"
 	"time"
-
-	"golang.org/x/crypto/ed25519"
 )
 
 var (
@@ -17,10 +22,20 @@ var (
 	// ErrMalformedLicense is a ...
 	ErrMalformedLicense = errors.New("Malformed License")
 
-	// generate new ed25519 key and replaces !!!
-	privateKey = []byte("5GvXN6OIrsgF3/ehJ17HvRPrrbNTLw/gtAmy4X5bKlH9rmXwQgFSVLt//nMsl0qFG28pjc1IN7PhgH01Z+QCTQ==")
-	publicKey  = []byte("/a5l8EIBUlS7f/5zLJdKhRtvKY3NSDez4YB9NWfkAk0=")
+	// Read the private and public keys from the PEM files
+	privateKey = readKeyFromFile("private_key.pem")
+	publicKey  = readKeyFromFile("public_key.pem")
 )
+
+// Read the key from a PEM file
+func readKeyFromFile(filename string) []byte {
+	key, err := ioutil.ReadFile(filename)
+	if err != nil {
+		fmt.Printf("Error reading key from file %s: %v\n", filename, err)
+		os.Exit(1)
+	}
+	return key
+}
 
 // License is a ...
 type License struct {
@@ -47,13 +62,21 @@ func (l *License) Expired() bool {
 }
 
 // Encode is a ...
-func (l *License) Encode(privateKey ed25519.PrivateKey) ([]byte, error) {
+func (l *License) Encode(privateKey *rsa.PrivateKey) ([]byte, error) {
 	msg, err := json.Marshal(l)
 	if err != nil {
 		return nil, err
 	}
 
-	sig := ed25519.Sign(privateKey, msg)
+	hash := sha256.New()
+	hash.Write(msg)
+	digest := hash.Sum(nil)
+
+	sig, err := rsa.SignPKCS1v15(rand.Reader, privateKey, crypto.SHA256, digest)
+	if err != nil {
+		return nil, err
+	}
+
 	buf := new(bytes.Buffer)
 	buf.Write(sig)
 	buf.Write(msg)
@@ -66,32 +89,39 @@ func (l *License) Encode(privateKey ed25519.PrivateKey) ([]byte, error) {
 }
 
 // Decode is a ...
-func Decode(data []byte, publicKey ed25519.PublicKey) (*License, error) {
+func Decode(data []byte, publicKey *rsa.PublicKey) (*License, error) {
 	block, _ := pem.Decode(data)
-	if block == nil || len(block.Bytes) < ed25519.SignatureSize {
+	if block == nil {
 		return nil, ErrMalformedLicense
 	}
 
-	sig := block.Bytes[:ed25519.SignatureSize]
-	msg := block.Bytes[ed25519.SignatureSize:]
+	// Calculate the signature size based on the length of the block.Bytes
+	sigSize := len(block.Bytes) - len(data) + len(block.Headers["Proc-Type"]) + len(block.Headers["DEK-Info"]) + 2
+	sig := block.Bytes[:sigSize]
+	msg := block.Bytes[sigSize:]
 
-	verified := ed25519.Verify(publicKey, msg, sig)
-	if !verified {
+	hash := sha256.New()
+	hash.Write(msg)
+	digest := hash.Sum(nil)
+
+	err := rsa.VerifyPKCS1v15(publicKey, crypto.SHA256, digest, sig)
+	if err != nil {
 		return nil, ErrInvalidSignature
 	}
+
 	out := new(License)
-	err := json.Unmarshal(msg, out)
+	err = json.Unmarshal(msg, out)
 	return out, err
 }
 
 // GetPrivateKey is a ...
-func GetPrivateKey() ed25519.PrivateKey {
+func GetPrivateKey() *rsa.PrivateKey {
 	key, _ := DecodePrivateKey(privateKey)
 	return key
 }
 
 // GetPublicKey is a ...
-func GetPublicKey() ed25519.PublicKey {
+func GetPublicKey() *rsa.PublicKey {
 	key, _ := DecodePublicKey(publicKey)
 	return key
 }

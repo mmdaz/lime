@@ -137,7 +137,7 @@ func TariffList(c *gin.Context) {
 		return
 	}
 	c.HTML(http.StatusOK, "tariffs.html", gin.H{
-		"title":  "📦 Tariffs",
+		"title":   "📦 Tariffs",
 		"tariffs": tariffList,
 	})
 }

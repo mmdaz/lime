@@ -41,7 +41,12 @@
 
                     <tr>
                         <td class="td-noline"></td>
-                        <td colspan="4" class="td-new-license"><a href="/admin/subscription/{{.customerID}}/new">create new license</a></td>
+                        <td colspan="4" class="td-new-license">
+                            <form id="create-license-form" method="POST" action="/admin/subscription/{{.customerID}}/new">
+                                <input type="text" name="hw_id" placeholder="Enter hardware ID">
+                                <button type="submit">Create new license</button>
+                            </form>
+                        </td>
                     </tr>
                     {{ if .Licensies }}
                     {{ range $key, $value := .Licensies }}
@@ -62,6 +67,24 @@
     <script src="//ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="//cdn.jsdelivr.net/npm/featherlight@1.7.14/release/featherlight.min.js"></script>
     <script src="/assets/js/main.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#create-license-form').submit(function(event) {
+                event.preventDefault();
+                $.ajax({
+                    type: 'POST',
+                    url: '/admin/subscription/{{.customerID}}/new',
+                    data: $('#create-license-form').serialize(),
+                    success: function(response) {
+                        window.location.href = '/admin/subscription/{{.customerID}}/';
+                    },
+                    error: function(error) {
+                        console.log(error);
+                    }
+                });
+            });
+        });
+    </script>
 </body>
 
 </html>

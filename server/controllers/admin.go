@@ -3,6 +3,7 @@ package controllers
 import (
 	"crypto/md5"
 	"encoding/hex"
+	"fmt"
 	"net/http"
 	"strconv"
 	"strings"
@@ -75,7 +76,8 @@ func CustomerSubscrptionList(c *gin.Context) {
 	customerID := c.Param("id")
 	action := c.Param("action")
 	subscriptionsList := models.SubscriptionsByCustomerID(customerID)
-	licensesList := models.LicensesListBySubscriptionID(customerID)
+	subscriptionID := strconv.Itoa(int((*subscriptionsList)[0].ID))
+	licensesList := models.LicensesListBySubscriptionID(subscriptionID)
 
 	switch action {
 	case "/":
@@ -90,7 +92,8 @@ func CustomerSubscrptionList(c *gin.Context) {
 			Companies: _tariff.Companies,
 			Users:     _tariff.Users,
 		}
-		metadata := []byte(`{"message": "test message"}`)
+		hwID := c.PostForm("hw_id")
+		metadata := []byte(fmt.Sprintf(`{"hw_id": "%s"}`, hwID))
 		_license := &license.License{
 			Iss: (*subscriptionsList)[0].CustomerName,
 			Cus: (*subscriptionsList)[0].StripeID,

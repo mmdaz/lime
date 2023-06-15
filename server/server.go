@@ -52,6 +52,7 @@ func setupRouter() *gin.Engine {
 	admin.Use(middleware.AuthRequired)
 	{
 		admin.GET("/subscription/:id/*action", controllers.CustomerSubscrptionList)
+		admin.POST("/subscription/:id/*action", controllers.CustomerSubscrptionList)
 		admin.GET("/tariffs", controllers.TariffList)
 		admin.GET("/license/:id", controllers.DownloadLicense)
 	}

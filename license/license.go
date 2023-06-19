@@ -44,8 +44,8 @@ type License struct {
 	Sub uint32          `json:"sub,omitempty"` // Subscriber ID
 	Typ string          `json:"typ,omitempty"` // License Type
 	Lim Limits          `json:"lim,omitempty"` // License Limit (e.g. Site)
-	Iat time.Time       `json:"iat,omitempty"` // Issued At
-	Exp time.Time       `json:"exp,omitempty"` // Expires At
+	Iat int64           `json:"iat,omitempty"` // Issued At (timestamp)
+	Exp int64           `json:"exp,omitempty"` // Expires At (timestamp)
 	Dat json.RawMessage `json:"dat,omitempty"` // Metadata
 }
 
@@ -58,7 +58,7 @@ type Limits struct {
 
 // Expired is a ...
 func (l *License) Expired() bool {
-	return l.Exp.IsZero() == false && time.Now().After(l.Exp)
+	return l.Exp != 0 && time.Now().Unix() > l.Exp
 }
 
 // Encode is a ...

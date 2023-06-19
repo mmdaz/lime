@@ -101,8 +101,8 @@ func CustomerSubscrptionList(c *gin.Context) {
 			Typ: _tariff.Name,
 			Lim: limit,
 			Dat: metadata,
-			Exp: time.Now().UTC().Add(month),
-			Iat: time.Now().UTC(),
+			Exp: time.Now().UTC().Add(month).Unix(),
+			Iat: time.Now().UTC().Unix(),
 		}
 		encoded, _ := _license.Encode(license.GetPrivateKey())
 

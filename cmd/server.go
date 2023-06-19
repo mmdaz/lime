@@ -4,8 +4,8 @@ import (
 	"fmt"
 
 	"github.com/spf13/cobra"
-	"github.com/werbot/lime/server"
-	"github.com/werbot/lime/version"
+	"github.com/mmdaz/lime/server"
+	"github.com/mmdaz/lime/version"
 )
 
 var banner = "license server\nversion " + version.Version + "\nhash:" + version.GitCommit

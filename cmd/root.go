@@ -5,7 +5,7 @@ import (
 	"os"
 
 	"github.com/spf13/cobra"
-	"github.com/werbot/lime/version"
+	"github.com/mmdaz/lime/version"
 )
 
 var rootCmd = &cobra.Command{

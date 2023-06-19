@@ -4,7 +4,7 @@ import (
 	"log"
 
 	"github.com/jinzhu/gorm"
-	"github.com/werbot/lime/server/models"
+	"github.com/mmdaz/lime/server/models"
 )
 
 var tariffs = []models.Tariff{

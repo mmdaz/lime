@@ -10,8 +10,8 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
-	"github.com/werbot/lime/license"
-	"github.com/werbot/lime/server/models"
+	"github.com/mmdaz/lime/license"
+	"github.com/mmdaz/lime/server/models"
 )
 
 // VerifyKey is a ...

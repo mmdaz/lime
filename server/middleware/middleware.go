@@ -6,7 +6,7 @@ import (
 
 	"github.com/gin-gonic/contrib/sessions"
 	"github.com/gin-gonic/gin"
-	"github.com/werbot/lime/config"
+	"github.com/mmdaz/lime/config"
 )
 
 // IdentityKey is a ...

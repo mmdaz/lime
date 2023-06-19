@@ -4,7 +4,7 @@ import (
 	"os"
 
 	"github.com/sirupsen/logrus"
-	"github.com/werbot/lime/config"
+	"github.com/mmdaz/lime/config"
 )
 
 // Logger is a ...

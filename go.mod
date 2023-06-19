@@ -1,4 +1,4 @@
-module github.com/werbot/lime
+module github.com/mmdaz/lime
 
 go 1.14
 

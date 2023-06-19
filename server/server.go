@@ -6,9 +6,9 @@ import (
 
 	"github.com/gin-gonic/contrib/sessions"
 	"github.com/gin-gonic/gin"
-	"github.com/werbot/lime/config"
-	"github.com/werbot/lime/server/controllers"
-	"github.com/werbot/lime/server/middleware"
+	"github.com/mmdaz/lime/config"
+	"github.com/mmdaz/lime/server/controllers"
+	"github.com/mmdaz/lime/server/middleware"
 )
 
 // Start is a ...

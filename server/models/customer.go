@@ -4,7 +4,7 @@ import (
 	"time"
 
 	"github.com/jinzhu/gorm"
-	"github.com/werbot/lime/config"
+	"github.com/mmdaz/lime/config"
 )
 
 // Customer is a ...

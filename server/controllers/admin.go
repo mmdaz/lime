@@ -11,9 +11,9 @@ import (
 
 	"github.com/gin-gonic/contrib/sessions"
 	"github.com/gin-gonic/gin"
-	"github.com/werbot/lime/license"
-	"github.com/werbot/lime/server/middleware"
-	"github.com/werbot/lime/server/models"
+	"github.com/mmdaz/lime/license"
+	"github.com/mmdaz/lime/server/middleware"
+	"github.com/mmdaz/lime/server/models"
 )
 
 // MainHandler is a ...

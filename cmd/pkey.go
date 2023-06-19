@@ -5,7 +5,7 @@ import (
 	"fmt"
 
 	"github.com/spf13/cobra"
-	"github.com/werbot/lime/license"
+	"github.com/mmdaz/lime/license"
 )
 
 var pairKeyCmd = &cobra.Command{

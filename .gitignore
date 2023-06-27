@@ -47,3 +47,4 @@ bin/*
 .vscode/*
 
 *.pem
+__debug_bin

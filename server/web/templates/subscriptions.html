@@ -32,7 +32,6 @@
                     {{ range $key, $value := .Subscriptions }}
                     <tr>
                         <td><b>{{$value.TariffName}}</b></td>
-                        <td>{{$value.StripeID}}</td>
                         <td>{{$value.CreatedAt | formatAsDate}}</td>
                         <td>{{$value.UpdatedAt | formatAsDate}}</td>
                         <td>{{ $value.Status | columnStatus}}</td>

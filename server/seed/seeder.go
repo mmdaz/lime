@@ -50,25 +50,21 @@ var customers = []models.Customer{
 var subscription = []models.Subscription{
 	{
 		CustomerID: 1,
-		StripeID:   "cus_FEDaLVeqQoVy6m",
 		TariffID:   1,
 		Status:     true,
 	},
 	{
 		CustomerID: 2,
-		StripeID:   "cus_APBaLDeqQoVy8m",
 		TariffID:   2,
 		Status:     true,
 	},
 	{
 		CustomerID: 3,
-		StripeID:   "cus_FEDajfeqSkTy01",
 		TariffID:   2,
 		Status:     true,
 	},
 	{
 		CustomerID: 4,
-		StripeID:   "cus_GGjdLDeqQokfj5",
 		TariffID:   1,
 		Status:     false,
 	},

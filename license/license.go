@@ -40,7 +40,7 @@ func readKeyFromFile(filename string) []byte {
 // License is a ...
 type License struct {
 	Iss string          `json:"iss,omitempty"` // Issued By
-	Cus string          `json:"cus,omitempty"` // Customer ID
+	Cus uint32          `json:"cus,omitempty"` // Customer ID
 	Sub uint32          `json:"sub,omitempty"` // Subscriber ID
 	Typ string          `json:"typ,omitempty"` // License Type
 	Lim Limits          `json:"lim,omitempty"` // License Limit (e.g. Site)

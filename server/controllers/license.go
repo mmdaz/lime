@@ -70,7 +70,7 @@ func CreateKey(c *gin.Context) {
 	reques := &requestLicense{}
 	c.BindJSON(&reques)
 
-	_subscription, err := modelSubscription.FindSubscriptionByStripeID(reques.StripeID)
+	_subscription, err := modelSubscription.FindSubscriptionByID(uint32(reques.SubscribtionID))
 	if err != nil {
 		respondJSON(c, http.StatusNotFound, err.Error())
 		return
@@ -100,7 +100,7 @@ func CreateKey(c *gin.Context) {
 	metadata := []byte(`{"message": "test message"}`)
 	_license := &license.License{
 		Iss: _customer.Name,
-		Cus: _subscription.StripeID,
+		Cus: _customer.ID,
 		Sub: _subscription.TariffID,
 		Typ: _tariff.Name,
 		Lim: limit,

@@ -5,7 +5,7 @@ import (
 )
 
 type requestLicense struct {
-	StripeID string `json:"customer"`
+	SubscribtionID int    `json:"subscribtion_id"`
 	License  string `json:"license"`
 }
 

@@ -57,7 +57,6 @@ func CreateCustomer(c *gin.Context) {
 	// create subscription
 	subs := &models.Subscription{
 		CustomerID: cos.ID,
-		StripeID:   "",
 		TariffID:   1,
 		Status:     true,
 	}
@@ -96,7 +95,7 @@ func CustomerSubscrptionList(c *gin.Context) {
 		metadata := []byte(fmt.Sprintf(`{"hw_id": "%s"}`, hwID))
 		_license := &license.License{
 			Iss: (*subscriptionsList)[0].CustomerName,
-			Cus: (*subscriptionsList)[0].StripeID,
+			Cus: (*subscriptionsList)[0].CustomerID,
 			Sub: (*subscriptionsList)[0].TariffID,
 			Typ: _tariff.Name,
 			Lim: limit,

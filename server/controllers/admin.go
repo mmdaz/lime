@@ -80,16 +80,23 @@ func CustomerSubscrptionList(c *gin.Context) {
 	switch action {
 	case "/":
 	case "/new":
-		month := time.Hour * 24 * 31
 		hwID := c.PostForm("hw_id")
+		moduleName := c.PostForm("module_name")
+		expireDate := c.PostForm("expire_date")
+		t, err := time.Parse("2006-01-02", expireDate)
+		if err != nil {
+			// handle error
+		}
+		println(t.Unix())
+		println(expireDate)
 		metadata := []byte(fmt.Sprintf(`{"hw_id": "%s"}`, hwID))
 		_license := &license.License{
 			Iss: (*subscriptionsList)[0].CustomerName,
 			Cus: (*subscriptionsList)[0].CustomerID,
 			Sub: (*subscriptionsList)[0].TariffID,
-			Typ: "Module Name",
+			Typ: moduleName,
 			Dat: metadata,
-			Exp: time.Now().UTC().Add(month).Unix(),
+			Exp: t.Unix(),
 			Iat: time.Now().UTC().Unix(),
 		}
 		encoded, _ := _license.Encode(license.GetPrivateKey())

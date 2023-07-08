@@ -57,7 +57,6 @@ func CreateCustomer(c *gin.Context) {
 	// create subscription
 	subs := &models.Subscription{
 		CustomerID: cos.ID,
-		TariffID:   1,
 		Status:     true,
 	}
 	_, err = subs.SaveSubscription()
@@ -82,23 +81,13 @@ func CustomerSubscrptionList(c *gin.Context) {
 	case "/":
 	case "/new":
 		month := time.Hour * 24 * 31
-		modelTariff := models.Tariff{}
-
-		_tariff, _ := modelTariff.FindTariffByID((*subscriptionsList)[0].ID)
-
-		limit := license.Limits{
-			Servers:   _tariff.Servers,
-			Companies: _tariff.Companies,
-			Users:     _tariff.Users,
-		}
 		hwID := c.PostForm("hw_id")
 		metadata := []byte(fmt.Sprintf(`{"hw_id": "%s"}`, hwID))
 		_license := &license.License{
 			Iss: (*subscriptionsList)[0].CustomerName,
 			Cus: (*subscriptionsList)[0].CustomerID,
 			Sub: (*subscriptionsList)[0].TariffID,
-			Typ: _tariff.Name,
-			Lim: limit,
+			Typ: "Module Name",
 			Dat: metadata,
 			Exp: time.Now().UTC().Add(month).Unix(),
 			Iat: time.Now().UTC().Unix(),
@@ -132,17 +121,6 @@ func CustomerSubscrptionList(c *gin.Context) {
 
 }
 
-func TariffList(c *gin.Context) {
-	tariffList, err := models.FindAllTariffs()
-	if err != nil {
-		respondJSON(c, 500, err.Error())
-		return
-	}
-	c.HTML(http.StatusOK, "tariffs.html", gin.H{
-		"title":   "📦 Tariffs",
-		"tariffs": tariffList,
-	})
-}
 
 // DownloadLicense is a ...
 func DownloadLicense(c *gin.Context) {

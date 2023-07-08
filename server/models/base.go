@@ -21,5 +21,5 @@ var (
 )
 
 func init() {
-	config.DB.AutoMigrate(&Tariff{}, &Customer{}, &Subscription{}, &License{})
+	config.DB.AutoMigrate(&Customer{}, &Subscription{}, &License{})
 }

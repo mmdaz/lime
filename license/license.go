@@ -43,18 +43,18 @@ type License struct {
 	Cus uint32          `json:"cus,omitempty"` // Customer ID
 	Sub uint32          `json:"sub,omitempty"` // Subscriber ID
 	Typ string          `json:"typ,omitempty"` // License Type
-	Lim Limits          `json:"lim,omitempty"` // License Limit (e.g. Site)
+	// Lim Limits          `json:"lim,omitempty"` // License Limit (e.g. Site)
 	Iat int64           `json:"iat,omitempty"` // Issued At (timestamp)
 	Exp int64           `json:"exp,omitempty"` // Expires At (timestamp)
 	Dat json.RawMessage `json:"dat,omitempty"` // Metadata
 }
 
 // Limits is a ...
-type Limits struct {
-	Servers   int `json:"servers"`
-	Companies int `json:"companies"`
-	Users     int `json:"users"`
-}
+// type Limits struct {
+// 	Servers   int `json:"servers"`
+// 	Companies int `json:"companies"`
+// 	Users     int `json:"users"`
+// }
 
 // Expired is a ...
 func (l *License) Expired() bool {

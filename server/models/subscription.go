@@ -11,7 +11,6 @@ import (
 type Subscription struct {
 	ID         uint32    `gorm:"primary_key;auto_increment" json:"id"`
 	CustomerID uint32    `sql:"type:int REFERENCES customers(id)" json:"customer_id"`
-	TariffID   uint32    `sql:"type:int REFERENCES tariffs(id)" json:"tariff_id"`
 	Status     bool      `gorm:"false" json:"status"`
 	CreatedAt  time.Time `gorm:"default:CURRENT_TIMESTAMP" json:"created_at"`
 	UpdatedAt  time.Time `gorm:"default:CURRENT_TIMESTAMP" json:"updated_at"`
@@ -43,7 +42,6 @@ func (s *Subscription) UpdateSubscription(uid uint32) (*Subscription, error) {
 	db := config.DB.Model(&Subscription{}).Where("id = ?", uid).Take(&Subscription{}).UpdateColumns(
 		map[string]interface{}{
 			"customer_id": s.CustomerID,
-			"tariff_id":   s.TariffID,
 			"status":      s.Status,
 			"update_at":   time.Now(),
 		},
@@ -83,7 +81,15 @@ type CustomerSubscriptionsList struct {
 // SubscriptionsByCustomerID is a ...
 func SubscriptionsByCustomerID(customerID string) *[]CustomerSubscriptionsList {
 	result := []CustomerSubscriptionsList{}
-	db := config.DB.Raw("SELECT subscriptions.ID,subscriptions.customer_id,customers.NAME AS customer_name,subscriptions.tariff_id,tariffs.NAME AS tariff_name,subscriptions.status,subscriptions.created_at,subscriptions.updated_at FROM subscriptions INNER JOIN customers ON subscriptions.customer_id=customers.ID INNER JOIN tariffs ON subscriptions.tariff_id=tariffs.ID WHERE subscriptions.customer_id=? ORDER BY subscriptions.created_at DESC ", customerID).Scan(&result)
+	db := config.DB.Raw(`
+								SELECT subscriptions.ID,subscriptions.customer_id,customers.NAME AS customer_name,
+								subscriptions.status,
+								subscriptions.created_at,subscriptions.updated_at FROM subscriptions
+								INNER JOIN customers ON subscriptions.customer_id=customers.ID
+								WHERE
+								subscriptions.customer_id=? ORDER BY subscriptions.created_at DESC
+								`,
+								 customerID).Scan(&result)
 	if db.Error != nil {
 		return &result
 	}

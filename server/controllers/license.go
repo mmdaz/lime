@@ -64,7 +64,6 @@ func VerifyKey(c *gin.Context) {
 func CreateKey(c *gin.Context) {
 	month := time.Hour * 24 * 31
 	modelSubscription := models.Subscription{}
-	modelTariff := models.Tariff{}
 	modelCustomer := models.Customer{}
 
 	reques := &requestLicense{}
@@ -82,28 +81,13 @@ func CreateKey(c *gin.Context) {
 
 	_customer, _ := modelCustomer.FindCustomerByID(_subscription.CustomerID)
 
-	_tariff, err := modelTariff.FindTariffByID(_subscription.TariffID)
-	if err != nil {
-		respondJSON(c, http.StatusNotFound, err.Error())
-		return
-	}
-	if _tariff.ID == 0 {
-		respondJSON(c, http.StatusNotFound, "Tariff not found!")
-		return
-	}
 
-	limit := license.Limits{
-		Servers:   _tariff.Servers,
-		Companies: _tariff.Companies,
-		Users:     _tariff.Users,
-	}
 	metadata := []byte(`{"message": "test message"}`)
 	_license := &license.License{
 		Iss: _customer.Name,
 		Cus: _customer.ID,
-		Sub: _subscription.TariffID,
-		Typ: _tariff.Name,
-		Lim: limit,
+		Sub: _subscription.ID,
+		Typ: "Module Name",
 		Dat: metadata,
 		Exp: time.Now().UTC().Add(month).Unix(),
 		Iat: time.Now().UTC().Unix(),

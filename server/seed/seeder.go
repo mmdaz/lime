@@ -7,23 +7,6 @@ import (
 	"github.com/mmdaz/lime/server/models"
 )
 
-var tariffs = []models.Tariff{
-	{
-		Name:      "Garage",
-		Price:     590,
-		Servers:   10,
-		Companies: 10,
-		Users:     10,
-	},
-	{
-		Name:      "Startup",
-		Price:     1990,
-		Servers:   20,
-		Companies: 20,
-		Users:     20,
-	},
-}
-
 var customers = []models.Customer{
 	{
 		ID:     1,
@@ -50,43 +33,32 @@ var customers = []models.Customer{
 var subscription = []models.Subscription{
 	{
 		CustomerID: 1,
-		TariffID:   1,
 		Status:     true,
 	},
 	{
 		CustomerID: 2,
-		TariffID:   2,
 		Status:     true,
 	},
 	{
 		CustomerID: 3,
-		TariffID:   2,
 		Status:     true,
 	},
 	{
 		CustomerID: 4,
-		TariffID:   1,
 		Status:     false,
 	},
 }
 
 // Load import test data to database
 func Load(db *gorm.DB) {
-	err := db.DropTableIfExists(&models.Tariff{}, &models.Customer{}, &models.Subscription{}, &models.License{}).Error
+	err := db.DropTableIfExists(&models.Customer{}, &models.Subscription{}, &models.License{}).Error
 	if err != nil {
 		log.Fatalf("cannot drop table: %v", err)
 	}
-	err = db.AutoMigrate(&models.Tariff{}, &models.Customer{}, &models.Subscription{}, &models.License{}).Error
+	err = db.AutoMigrate(&models.Customer{}, &models.Subscription{}, &models.License{}).Error
 
 	if err != nil {
 		log.Fatalf("cannot migrate table: %v", err)
-	}
-
-	for i := range tariffs {
-		err = db.Model(&models.Tariff{}).Create(&tariffs[i]).Error
-		if err != nil {
-			log.Fatalf("cannot seed tariff table: %v", err)
-		}
 	}
 
 	for i := range customers {

@@ -86,7 +86,7 @@ func DeactivateLicenseBySubID(uid uint32) error {
 	db := config.DB.Model(&License{}).Where("subscription_id = ?", uid).UpdateColumns(
 		map[string]interface{}{
 			"status":    false,
-			"update_at": time.Now(),
+			"updated_at": time.Now(),
 		},
 	)
 	if db.Error != nil {

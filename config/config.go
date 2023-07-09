@@ -8,8 +8,8 @@ import (
 	"github.com/jinzhu/gorm"
 	"github.com/spf13/viper"
 
-	// Register postgres driver
-	_ "github.com/jinzhu/gorm/dialects/postgres"
+	// Register sqlite3 driver
+	_ "github.com/jinzhu/gorm/dialects/sqlite"
 )
 
 // Provider is a ...
@@ -53,9 +53,9 @@ func init() {
 	var err error
 	defaultConfig = readViperConfig("LIME")
 
-	DB, err = gorm.Open("postgres", fmt.Sprintf("host=%s port=%s user=%s dbname=%s sslmode=disable password=%s", defaultConfig.GetString("db_host"), defaultConfig.GetString("db_port"), defaultConfig.GetString("db_user"), defaultConfig.GetString("db_name"), defaultConfig.GetString("db_password")))
+	DB, err = gorm.Open("sqlite3", defaultConfig.GetString("db_path"))
 	if err != nil {
-		fmt.Printf("Cannot connect to postgres database")
+		fmt.Printf("Cannot connect to sqlite3 database")
 		log.Fatal("This is the error:", err)
 	}
 }
@@ -77,11 +77,7 @@ func readViperConfig(appName string) *viper.Viper {
 	v.SetDefault("cookie_secret", "TGq7dTjt@G.vkuDYwQfdf7uZvmwr@MzV.r2r6NGtPF")
 	v.SetDefault("cookie_name", "console")
 
-	v.SetDefault("db_host", "127.0.0.1")
-	v.SetDefault("db_user", "postgres")
-	v.SetDefault("db_password", "123456")
-	v.SetDefault("db_name", "license")
-	v.SetDefault("db_port", "5432")
+	v.SetDefault("db_path", "./gorm.db")
 
 	return v
 }

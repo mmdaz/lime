@@ -53,7 +53,9 @@ func setupRouter() *gin.Engine {
 	{
 		admin.GET("/subscription/:id/*action", controllers.CustomerSubscrptionList)
 		admin.POST("/subscription/:id/*action", controllers.CustomerSubscrptionList)
+		admin.POST("/addModule", controllers.CreateModule)
 		admin.GET("/license/:id", controllers.DownloadLicense)
+		admin.GET("/modules", controllers.ModulesList)
 	}
 
 	return r

@@ -119,15 +119,26 @@ func CustomerSubscrptionList(c *gin.Context) {
 		c.Redirect(http.StatusFound, "/admin/subscription/"+customerID+"/")
 	}
 
+	allModules, err := models.FindAllModules()
+	if err != nil {
+		println(err.Error()) // return 500
+	}
+
+	// make module names list
+	var modulesList []string
+	for _, module := range *allModules {
+		modulesList = append(modulesList, module.Name)
+	}
+
 	c.HTML(http.StatusOK, "subscriptions.html", gin.H{
 		"title":         "🧩 Subscription and Licenses by " + (*subscriptionsList)[0].CustomerName,
 		"customerID":    customerID,
 		"Subscriptions": subscriptionsList,
 		"Licensies":     licensesList,
+		"Modules":       modulesList,
 	})
 
 }
-
 
 // DownloadLicense is a ...
 func DownloadLicense(c *gin.Context) {

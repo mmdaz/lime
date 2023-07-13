@@ -6,12 +6,16 @@ import (
 
 type requestLicense struct {
 	SubscribtionID int    `json:"subscribtion_id"`
-	License  string `json:"license"`
+	License        string `json:"license"`
 }
 
 type requestCreateCustomer struct {
 	Name   string `json:"name"`
 	Status bool   `json:"status"`
+}
+
+type requestCreateModule struct {
+	Name string `json:"name"`
 }
 
 // ResponseData is a ...

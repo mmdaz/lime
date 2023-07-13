@@ -43,10 +43,15 @@
                         <td colspan="4" class="td-new-license">
                             <form id="create-license-form" method="POST" action="/admin/subscription/{{.customerID}}/new">
                                 <input type="text" name="hw_id" placeholder="Enter hardware ID">
-                                <input type="text" name="module_name" placeholder="Enter module name">
+                                <select name="module_name">
+                                    {{ range $index, $module := .Modules }}
+                                    <option value="{{ $module }}">{{ $module }}</option>
+                                    {{ end }}
+                                </select>
                                 <input type="date" name="expire_date" placeholder="Enter expiry date">
                                 <button type="submit">Create new license</button>
-                            </form>                            
+                            </form>
+                                                        
                         </td>
                     </tr>
                     {{ if .Licensies }}

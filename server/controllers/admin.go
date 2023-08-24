@@ -110,6 +110,7 @@ func CustomerSubscrptionList(c *gin.Context) {
 			License:        encoded,
 			Hash:           licenseHash,
 			Status:         true,
+			ModuleName:     moduleName,
 		}
 		key.SaveLicense()
 

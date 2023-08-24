@@ -24,7 +24,6 @@
                         <th></th>
                         <th>Name</th>
                         <th>Created</th>
-                        <th>Updated</th>
                         <th></th>
                     </tr>
                 </thead>
@@ -34,8 +33,6 @@
                         <td><a href="/admin/subscription/{{$value.ID}}/">{{$value.ID}}</a></td>
                         <td><a href="/admin/subscription/{{$value.ID}}/">{{$value.Name}}</a></td>
                         <td>{{$value.CreatedAt | formatAsDate}}</td>
-                        <td>{{$value.UpdatedAt | formatAsDate}}</td>
-                        <td>{{ $value.Status | columnStatus}}</td>
                     </tr>
                     {{end}}
                 </tbody>

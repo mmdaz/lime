@@ -14,6 +14,7 @@ type License struct {
 	License        []byte    `gorm:"null" json:"license"`
 	Hash           string    `gorm:"null" json:"hash"`
 	Status         bool      `gorm:"false" json:"status"`
+	ModuleName     string    `gorm:"defaulet:'default'" json:"module_name"`
 	CreatedAt      time.Time `gorm:"default:CURRENT_TIMESTAMP" json:"created_at"`
 	UpdatedAt      time.Time `gorm:"default:CURRENT_TIMESTAMP" json:"updated_at"`
 }
@@ -85,7 +86,7 @@ func (l *License) DeleteLicense(uid uint32) (int64, error) {
 func DeactivateLicenseBySubID(uid uint32) error {
 	db := config.DB.Model(&License{}).Where("subscription_id = ?", uid).UpdateColumns(
 		map[string]interface{}{
-			"status":    false,
+			"status":     false,
 			"updated_at": time.Now(),
 		},
 	)

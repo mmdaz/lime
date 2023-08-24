@@ -21,5 +21,6 @@ var (
 )
 
 func init() {
+	println("Migration started")
 	config.DB.AutoMigrate(&Customer{}, &Subscription{}, &License{}, &Module{})
 }
